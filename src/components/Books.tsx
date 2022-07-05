@@ -1,53 +1,53 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState, useReducer } from "react"
+import { getBooks, getDataBooks, getMoreBooks } from "../reducers/bookRequests"
+import { putBooksInState } from "../reducers/booksStateReducer"
 import store from "../reducers/settingLink"
-
-const API_KEY = "AIzaSyCKqBTCe1dsf0iEsfGG4ayMYps2z4c2AZY"
-
-function getBooks(params:{input:string,relevance:string},startIndex:number = 1,maxResults:number = 30){
-    return fetch(`https://www.googleapis.com/books/v1/volumes?q=${params.input}&printType=all&orderBy=${params.relevance}&key=`+API_KEY+"&startIndex="+startIndex+"&maxResults="+maxResults)
-}
-
-type BookState = {
-    image:string
-    name:string
-}
+import Book from "./Book"
 
 export default function Books(){
-    const [pagination,setPagination] = useState({startIndex:0,maxResults:30})
-    const [books,setBooks] = useState<BookState[]>([])
-    const [flag,setFlag] = useState(0)
-
+    const [startIndex,setPagination] = useState(0)
+    const [books,dispatchBooks] = useReducer(putBooksInState,[])
+    const [totalItems,setTotalItems] = useState<number>(0)
+    const [currentStateUrl,setCurrentStateUrl] = useState({
+        inputText:"",
+        categories:"all",
+        relevance:"relevance"
+    })
+    
     useEffect(()=>{
         store.subscribe(async()=>{
-            const {inputText,relevance} = store.getState()
-            getBooks({input:inputText,relevance},pagination.startIndex,pagination.maxResults).then(async data=>{
-                const dataJson = await data.json()
-                console.log(dataJson);
-                
-                const dataBooks:BookState[] = dataJson.items.map((book:any)=>{
-                    if(book.volumeInfo.readingModes.image){
-                        return {
-                            image:book.volumeInfo.imageLinks.smallThumbnail,
-                            name:book.volumeInfo.title
-                            }
-                    }else{
-                        return {
-                            name:book.volumeInfo.title
-                            }
-                    }
-                   
+            const {inputText,relevance,categories} = store.getState()
+            setCurrentStateUrl(store.getState())
+            const fetchData = getBooks({input:inputText,relevance,categories},startIndex)
+            if((await fetchData).status<399){
+                fetchData.then(async data=>{
+                    const dataJson = await data.json()
+                    setTotalItems(dataJson.totalItems)
+                        dispatchBooks({type:"load",data:getDataBooks(dataJson)})
+                        setPagination(30)
                 })
-                setBooks(dataBooks)
-            })
+            }else{
+                dispatchBooks({type:"load",data:[]})
+                setPagination(30)
+            }
             
         })
-    },[flag])
-    
-  
-    return <div>
-        {books.map((book:BookState,i:number)=>{
-        return <img key={i} src={book.image} alt="" />
-    })}
-    </div>
-   
+    },[])
+
+
+    if(totalItems-startIndex>0){
+        return <div>
+        <Book books = {books}/>
+        <button onClick={()=>{
+        setPagination(startIndex+30)
+            getMoreBooks(startIndex,currentStateUrl).then(async data=>{
+                dispatchBooks({type:"add",data:getDataBooks(await data.json())})
+            })
+        }}>Загрузить еще</button>
+        </div>
+    }else{
+        return <div>
+        <Book books = {books}/>
+        </div>
+    }
 }
