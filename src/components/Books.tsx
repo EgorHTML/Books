@@ -6,13 +6,18 @@ export default function Books(props:{books:BookState[]}){
     return  <div className="books">
         {books.map((book:BookState,i:number)=>{
             if(book.image === undefined) {
-                return <Link className="book" key={i} to={`/${book.name}`}> <div> {book.name} </div></Link>
+                return <Link className="book" key={i} to={`/${book.id}`}>  
+                {book.name} 
+                {Array.isArray(book.authors) && <p>authors:{book.authors.join(", ")}</p> }
+                {Array.isArray(book.categories) && <p>categories:{book.categories[0]}</p> }
+                </Link>
             }
             else {
-                return <Link className="book" key={i} to={`/${book.name}`}><div>
+                return <Link className="book" key={i} to={`/${book.id}`}>
                     <img src={book.image} alt="" />
                     <p>{book.name}</p>
-                </div>
+                    {Array.isArray(book.authors) && <p>authors:{book.authors.join(", ")}</p> }
+                    {Array.isArray(book.categories) && <p>categories:{book.categories[0]}</p> }
                 </Link>
                 
             }

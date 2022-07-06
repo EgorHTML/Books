@@ -16,13 +16,17 @@ export function getDataBooks(dataJson:any):BookState[]{
                return {
                    image:book.volumeInfo.imageLinks.smallThumbnail,
                    name:book.volumeInfo.title,
-                   categories:book.volumeInfo.categories
+                   categories:book.volumeInfo.categories,
+                   id:book.id,
+                   authors:book.volumeInfo.authors
                    }
            }else{
                return{
                    name:book.volumeInfo.title,
                    categories:book.volumeInfo.categories,
-                   image:undefined
+                   image:undefined,
+                   id:book.id,
+                   authors:book.volumeInfo.authors
                }
            }
        })
