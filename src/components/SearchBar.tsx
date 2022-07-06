@@ -1,21 +1,19 @@
 import store, { changeSettingsLink } from "../reducers/settingLink";
 
-store.subscribe(()=>{
-    console.log(store.getState());
-    
-})
 function onSubmit(event:any){
     event.preventDefault()
     const inputText = event.target.elements[0].value
     const relevance = event.target.elements["relevance"].value
     const categories = event.target.elements["categories"].value
-    store.dispatch(changeSettingsLink({inputText,relevance,categories}))
+    if(inputText.trim()!==""){
+        store.dispatch(changeSettingsLink({inputText,relevance,categories}))
+    }
 }
 
 export default function SearchBar(){
  
     return <div>
-             <form action="/" onSubmit={onSubmit}>
+             <form className="navBar" action="/" onSubmit={onSubmit}>
              <input type="text" placeholder="Поиск" />
              <button type="submit">Serach</button>
              <select defaultValue={"all"} name="categories">

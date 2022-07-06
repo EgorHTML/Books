@@ -1,12 +1,10 @@
-import Books from "./Books"
+import BookShelf from "./BookShelf"
 import SearchBar from "./SearchBar"
-
-
+import "../styles/main.css"
 
 export default function App(){
-   
       return  <div>
-        <SearchBar/>
-        <Books/>
+          <SearchBar/>
+          <BookShelf/>
         </div>
 }
