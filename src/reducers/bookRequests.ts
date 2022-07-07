@@ -1,8 +1,6 @@
 import { API_KEY, BookState, OptionsUrl } from "./constsAndTypes"
 
 export function getBooks(params:{input:string,relevance:string,categories:string},startIndex:number = 0,maxResults:number = 30){
-    console.log(`https://www.googleapis.com/books/v1/volumes?q=${params.input}&printType=${params.categories}&orderBy=${params.relevance}&key=`+API_KEY+"&startIndex="+startIndex+"&maxResults="+maxResults);
-    
     return fetch(`https://www.googleapis.com/books/v1/volumes?q=${params.input}&printType=${params.categories}&orderBy=${params.relevance}&key=`+API_KEY+"&startIndex="+startIndex+"&maxResults="+maxResults)
 }
 
