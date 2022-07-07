@@ -11,7 +11,7 @@ function onSubmit(event:any){
 }
 
 export default function SearchBar(){
- 
+
     return <div >
             <h1 style={{textAlign:"center"}}>Search for books</h1>
              <form  action="/" onSubmit={onSubmit}>

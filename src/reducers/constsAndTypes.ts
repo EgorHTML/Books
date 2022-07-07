@@ -1,6 +1,6 @@
-export const API_KEY = "AIzaSyCKqBTCe1dsf0iEsfGG4ayMYps2z4c2AZY"
+export const API_KEY = "AIzaSyAfxYf5Tze3WSnXx6IFVp4nU-l1MMCjbss"
 
-export function getUrlForSingleVolume(id:string,API_KEY = "AIzaSyCKqBTCe1dsf0iEsfGG4ayMYps2z4c2AZY"):string{
+export function getUrlForSingleVolume(id:string,API_KEY = "AIzaSyAfxYf5Tze3WSnXx6IFVp4nU-l1MMCjbss"):string{
     return `https://www.googleapis.com/books/v1/volumes/${id}?projection=lite&key=${API_KEY}`
 }
 
@@ -19,7 +19,4 @@ export type OptionsUrl = {
     setOptions?:(params:OptionsUrl)=>void
 }
 
-fetch(getUrlForSingleVolume("1qceEAAAQBAJ")).then(async data=>{
-    console.log(await data.json());
-    
-})
+

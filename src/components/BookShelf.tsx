@@ -23,31 +23,29 @@ export default function BookShelf(){
             if((await fetchData).status<399){
                 fetchData.then(async data=>{
                     const dataJson = await data.json()
-                    console.log(dataJson);
-                    
                     setTotalItems(dataJson.totalItems)
-                    setFetching(true)
-                        dispatchBooks({type:"load",data:getDataBooks(dataJson)})
-                        setFetching(false)
-                        setPagination(30)
+                    dispatchBooks({type:"load",data:getDataBooks(dataJson)})
+                    setPagination(30)
                 })
             }else{
                 dispatchBooks({type:"load",data:[]})
-                setPagination(30)
+                setPagination(0)
+                console.error((await fetchData).status)
             }
         })
     },[])
-
-    if(totalItems-startIndex>0){
+    
         return <Suspense fallback={ <div>Загрузка...</div> }> <div>
                 {(currentStateUrl.inputText.length>0 && totalItems!==-1) && <p style={{textAlign:"center"}}>Найдено ответов:{totalItems}</p>}
-                {(currentStateUrl.inputText.length>0 && books.length===0) && <p style={{fontSize:"40px",textAlign:"center"}}>Loading...</p>} 
+                
+                {(currentStateUrl.inputText.length>0 && books.length===0 &&(totalItems>0 || totalItems===-1) )  && <p style={{fontSize:"40px",textAlign:"center"}}>Loading...</p>} 
+                
                 <Book books = {books}/>  
                 
                 {isFetching && <p style={{fontSize:"40px",textAlign:"center"}}>Loading...</p>} 
                 
                 <div className="books__load">
-                {!isFetching && <button  onClick={()=>{
+                {(isFetching === false &&(totalItems-startIndex>0))&& <button  onClick={()=>{
                         setFetching(true)
                         setPagination(startIndex+30)
                         getMoreBooks(startIndex,currentStateUrl).then(async data=>{
@@ -56,16 +54,6 @@ export default function BookShelf(){
                 })
                 }}>Load more</button>}
               </div> 
-              
             </div>
             </Suspense>
-    }else{
-           return <Suspense fallback={ <div>Загрузка...</div> }>
-            <div>
-            {(currentStateUrl.inputText.length>0 && totalItems!==-1) && <p style={{textAlign:"center"}}>Найдено ответов:{totalItems}</p>}
-            {(currentStateUrl.inputText.length>0 && books.length===0 &&(totalItems>0 || totalItems===-1) ) && <p style={{fontSize:"40px",textAlign:"center"}}>Loading...</p>} 
-            <Book books = {books}/>
-            </div>
-            </Suspense>
-    }
 }

@@ -1,0 +1,11 @@
+@media (max-width:650px){
+    .book{
+        width: 50%;
+    }
+    .about__book img{
+        width: 10%;
+    }
+    .about__book {
+        flex-direction: column-reverse;
+    }
+}
