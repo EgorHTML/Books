@@ -6,6 +6,7 @@ import {
       Route,
     } from "react-router-dom"
 import AboutBook from './components/AboutBook';
+import React from 'react';
 
 const container = document.getElementById('root')!;
 const root = createRoot(container);

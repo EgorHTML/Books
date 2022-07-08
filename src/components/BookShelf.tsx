@@ -2,7 +2,7 @@ import { useEffect, useState, useReducer, lazy, Suspense } from "react"
 import { getBooks, getDataBooks, getMoreBooks } from "../reducers/bookRequests"
 import { putBooksInState } from "../reducers/booksStateReducer"
 import store from "../reducers/settingLink"
-const Book = lazy(()=> import("./Books"))
+const Books = lazy(()=> import("./Books"))
 
 export default function BookShelf(){
     const [startIndex,setPagination] = useState(0)
@@ -40,7 +40,7 @@ export default function BookShelf(){
                 
                 {(currentStateUrl.inputText.length>0 && books.length===0 &&(totalItems>0 || totalItems===-1) )  && <p style={{fontSize:"40px",textAlign:"center"}}>Loading...</p>} 
                 
-                <Book books = {books}/>  
+                <Books books = {books}/>  
                 
                 {isFetching && <p style={{fontSize:"40px",textAlign:"center"}}>Loading...</p>} 
                 
