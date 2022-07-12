@@ -1,7 +1,7 @@
-import { createSlice, configureStore } from "@reduxjs/toolkit"
-import { OptionsUrl } from "./constsAndTypes"
+import { createSlice } from "@reduxjs/toolkit"
+import { OptionsUrl } from "../../features/constsAndTypes"
 
-const urlSlice = createSlice({
+export default createSlice({
     name:"urlParams",
     initialState:{
         inputText:"",
@@ -16,10 +16,3 @@ const urlSlice = createSlice({
         }
     }
 })
-
-const store = configureStore({
-    reducer:urlSlice.reducer
-})
-
-export const {changeSettingsLink} = urlSlice.actions
-export default store

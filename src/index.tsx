@@ -7,11 +7,14 @@ import {
     } from "react-router-dom"
 import AboutBook from './components/AboutBook';
 import React from 'react';
+import { Provider } from 'react-redux';
+import settingLink from './store/store';
 
 const container = document.getElementById('root')!;
 const root = createRoot(container);
 
 root.render(
+      <Provider store={settingLink}>
       <BrowserRouter>
       <Routes>
       <Route >
@@ -20,5 +23,6 @@ root.render(
       </Route>
       </Routes>
       </BrowserRouter>
+      </Provider>
 );
 

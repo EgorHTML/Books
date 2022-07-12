@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { getUrlForSingleVolume } from "../reducers/constsAndTypes";
+import { getUrlForSingleVolume } from "../features/constsAndTypes";
 import SearchBar from "./SearchBar";
 
 type AboutSingleVolume={title:string,urlImg:string,authors:string[],description:string,categories:string[]}

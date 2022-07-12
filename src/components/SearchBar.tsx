@@ -1,4 +1,4 @@
-import store, { changeSettingsLink } from "../reducers/settingLink";
+import store, { changeSettingsLink, useAppSelector } from "../store/store";
 
 function onSubmit(event:any){
     event.preventDefault()
@@ -11,18 +11,18 @@ function onSubmit(event:any){
 }
 
 export default function SearchBar(){
-
+    const settingsLink = useAppSelector(store=>store.urlParams)
     return <div >
             <h1 style={{textAlign:"center"}}>Search for books</h1>
              <form  action="/" onSubmit={onSubmit}>
                 <div className="search__field">
-                    <input className="input__text" type="text" placeholder="Поиск" />
+                    <input className="input__text" type="text" placeholder="Поиск" defaultValue={settingsLink.inputText}/>
                     <button type="submit">Serach</button>
                 </div>
              <div className="navBar">
              <label>
              Categories:
-             <select defaultValue={"all"} name="categories">
+             <select defaultValue={settingsLink.categories} name="categories">
                  <option value="all">all</option>
                  <option value="books">books</option>
                  <option value="magazines">magazines</option>
@@ -30,7 +30,7 @@ export default function SearchBar(){
              </label>
              <label>
                 Sorting by:
-             <select defaultValue={"relevance"} name="relevance">
+             <select defaultValue={settingsLink.relevance} name="relevance">
                  <option value="relevance">relevance </option>
                  <option value="newest">newest</option>
              </select>
