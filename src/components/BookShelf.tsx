@@ -16,14 +16,16 @@ export default function BookShelf(){
             if(inputText.trim()!==""){
                 getBooks({input:inputText,relevance,categories},startIndex)
                         .then(async data=>{
+                            if(data.ok === false) throw new Error(`${data.status}`)                            
                             const dataJson = await data.json()
                             setTotalItems(dataJson.totalItems)
                             dispatchBooks({type:"load",data:getDataBooks(dataJson)})
                             setPagination(30)
-                    }).catch((error)=>{
+                    }).catch((error:Error)=>{
                         dispatchBooks({type:"load",data:[]})
+                        setTotalItems(0)
                         setPagination(0)
-                        console.error(error)
+                        console.error(error.message)
                     })
             }
     },[urlSettings])
