@@ -15,7 +15,7 @@ export default function AboutBook(){
                 const book = await data.json()
                 setInfo({
                     title:book.volumeInfo.title,
-                    urlImg:book.volumeInfo.imageLinks.medium,
+                    urlImg:book.volumeInfo.imageLinks.thumbnail,
                     authors:book.volumeInfo.authors,
                     description:book.volumeInfo.description,
                     categories:book.volumeInfo.categories

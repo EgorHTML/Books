@@ -10,23 +10,23 @@ export default function BookShelf(){
     const [books,dispatchBooks] = useReducer(putBooksInState,[])
     const [totalItems,setTotalItems] = useState(-1)
     const [isFetching,setFetching] = useState(false)
-   
+    
     useEffect(()=>{
             const {inputText,relevance,categories} = urlSettings
             if(inputText.trim()!==""){
                 getBooks({input:inputText,relevance,categories},startIndex)
-                        .then(async data=>{
-                            if(data.ok === false) throw new Error(`${data.status}`)                            
-                            const dataJson = await data.json()
-                            setTotalItems(dataJson.totalItems)
-                            dispatchBooks({type:"load",data:getDataBooks(dataJson)})
-                            setPagination(30)
-                    }).catch((error:Error)=>{
+                .then(async data=>{
+                        if(data.ok === false) throw new Error(`${data.status}`)                            
+                        const dataJson = await data.json()
+                        setTotalItems(dataJson.totalItems)
+                        dispatchBooks({type:"load",data:getDataBooks(dataJson)})
+                        setPagination(30)
+                }).catch((error:Error)=>{
                         dispatchBooks({type:"load",data:[]})
                         setTotalItems(0)
                         setPagination(0)
                         console.error(error.message)
-                    })
+                })
             }
     },[urlSettings])
     
