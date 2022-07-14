@@ -1,9 +1,11 @@
 import { useEffect, useState, useReducer, lazy, Suspense, useCallback, useMemo } from "react"
+import { BookState } from "../features/constsAndTypes"
 import { getBooks, getDataBooks, getMoreBooks } from "../features/network/bookRequests"
 import { putBooksInState } from "../store/reducers/booksStateReducer"
 import { addBooksToSlice, putBooksInSlice } from "../store/slices/booksSlice"
-import { useAppDispatch, useAppSelector } from "../store/store"
+import store, { useAppDispatch, useAppSelector } from "../store/store"
 const Books = lazy(()=> import("./Books"))
+
 
 export default function BookShelf(){
         const dispatch = useAppDispatch()
@@ -15,6 +17,8 @@ export default function BookShelf(){
         const [totalItems,setTotalItems] = useState(-1)
         const [isFetching,setFetching] = useState(false)
     
+
+
     useEffect(()=>{
             const {inputText,relevance,categories} = urlSettings
             if(inputText.trim()!==""){
@@ -24,11 +28,12 @@ export default function BookShelf(){
                         setError(false)                         
                         const dataJson = await data.json()
                         setTotalItems(dataJson.totalItems)
-                        dispatch(putBooksInSlice({books:getDataBooks(dataJson)}))
-                        // dispatchBooks({type:"load",data:booksSlice})
+
+                        if((getDataBooks(dataJson).every((elem:BookState,i:number)=>booksSlice[i]?.id === elem?.id))===false){
+                                dispatch(putBooksInSlice({books:getDataBooks(dataJson)}))
+                        }
                         setPagination(30)
                 }).catch((error:Error)=>{
-                        // dispatchBooks({type:"load",data:[]})
                         setError(true)
                         setTotalItems(0)
                         setPagination(0)
@@ -53,7 +58,6 @@ export default function BookShelf(){
                         getMoreBooks(startIndex,urlSettings).then(async data=>{
                         let dataJson = await data.json()
                         dispatch(addBooksToSlice({books:getDataBooks(dataJson)}))
-                        // dispatchBooks({type:"add",data:getDataBooks(dataJson)})
                         setFetching(false)
                 })
                 }}>Load more</button>}
