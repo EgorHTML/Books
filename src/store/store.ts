@@ -1,10 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit"
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux"
+import booksSlice from "./slices/booksSlice"
 import urlSlice from "./slices/urlSlice"
 
 const store = configureStore({
     reducer:{
-        urlParams:urlSlice.reducer
+        urlParams:urlSlice.reducer,
+        booksSlice:booksSlice
     }
 })
 
